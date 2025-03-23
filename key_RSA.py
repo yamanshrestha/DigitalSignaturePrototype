@@ -35,27 +35,6 @@ def generate(bitsize) : #creating function that controls the key generation proc
     public_key = pub_keygen.exportKey('PEM')
     #print ('\n')
     #print (public_key)
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-
-    # Define the folder to store the keys
-    key_folder = os.path.join(current_dir, "key")
-
-    # Create the folder if it doesn't exist
-    os.makedirs(key_folder, exist_ok=True)
-
-    # Define the file paths for the keys
-    private_key_path = os.path.join(key_folder, "PrivateKeyRSA.pem")
-    public_key_path  = os.path.join(key_folder, "PublicKeyRSA.pem")
-
-    # Write the private key
-    with open(private_key_path, 'w') as f:
-        f.write(private_key)
-
-    # Write the public key
-    with open(public_key_path, 'w') as f:
-        f.write(public_key)
-
-    print("Thank You! Key Created Successfully.")
     return (private_key, public_key)
 
 #Avoid same code execution in GUI 

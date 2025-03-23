@@ -2,6 +2,7 @@ import os
 import sys
 from tkinter import *
 from tkinter import ttk, filedialog, messagebox
+import tkinter as tk
 
 import key_RSA
 import key_DSA
@@ -81,7 +82,57 @@ class Generate(ttk.Frame):
         ttk.Label(right_disp, text="Public Key").pack(anchor=W)
         self.public_text = Text(right_disp, width=30, height=10)
         self.public_text.pack(fill=BOTH, expand=True, padx=5, pady=5)
-    
+
+    def save_keypair(self, private_key, public_key, label="RSA"):
+        root = tk.Tk()
+        root.withdraw()
+        filetypes = [
+            ("Key File", "*.pem"),
+            ("Text File", "*.txt"),
+            ("Raw Key File", "*.key")
+        ]
+        # Ask for private key file path
+        private_key_path = filedialog.asksaveasfilename(
+            title=f"Save {label} Private Key As",
+            defaultextension=".pem",
+            filetypes=filetypes,
+            initialfile=f"PrivateKey{label}",
+            parent=root
+        )
+        if not private_key_path:
+            messagebox.showwarning("Cancelled", f"{label} key generation cancelled. No private key file selected.", parent=root)
+            root.destroy()
+            return False
+
+        # Ask for public key file path
+        public_key_path = filedialog.asksaveasfilename(
+            title=f"Save {label} Public Key As",
+            defaultextension=".pem",
+            filetypes=filetypes,
+            initialfile=f"PublicKey{label}",
+            parent=root
+        )
+        if not public_key_path:
+            messagebox.showwarning("Cancelled", f"{label} key generation cancelled. No public key file selected.", parent=root)
+            root.destroy()
+            return False
+
+        try:
+            with open(private_key_path, 'wb') as f:
+                f.write(private_key)
+
+            with open(public_key_path, 'wb') as f:
+                f.write(public_key)
+
+            messagebox.showinfo("Success", f"{label} key pair saved successfully!", parent=root)
+            return True
+        except Exception as e:
+            messagebox.showerror("Error", f"Failed to save {label} keys:\n{e}", parent=root)
+            return False
+        finally:
+            root.destroy()
+
+
     def generate_key(self):
         try:
             alg = self.algorithm.get()
@@ -98,17 +149,33 @@ class Generate(ttk.Frame):
                     return
                 
             if alg == 1:
-                key_pair = key_RSA.generate(self.bits.get())
-                messagebox.showinfo("Complete", "RSA Keypair successfully created!")
+                key_pair= key_RSA.generate(self.bits.get())
+                private_key, public_key = key_pair
+                if self.save_keypair(private_key, public_key, label="RSA"):
+                    messagebox.showinfo("Success", "RSA keys are also stored successfylly.")
+                else:
+                    return
             elif alg == 2:
                 key_pair = key_DSA.generate(self.bits.get())
-                messagebox.showinfo("Complete", "DSA Keypair successfully created!")
+                private_key, public_key = key_pair
+                if self.save_keypair(private_key, public_key, label="DSA"):
+                    messagebox.showinfo("Success", "DSA keys are also stored successfylly.")
+                else:
+                    return
             elif alg == 3:
                 key_pair = key_ECC.generate(self.curve.get())
-                messagebox.showinfo("Complete", "ECC Keypair successfully created!")
+                private_key, public_key = key_pair
+                if self.save_keypair(private_key, public_key, label="ECC"):
+                    messagebox.showinfo("Success", "ECC keys are also stored successfylly.")
+                else:
+                    return
             elif alg == 4:
                 key_pair = key_ElGamal.generate(self.bits.get())
-                messagebox.showinfo("Complete", "ElGamal Keypair successfully created!")
+                private_key, public_key = key_pair
+                if self.save_keypair(private_key, public_key, label="ElGamel"):
+                    messagebox.showinfo("Success", "ElGamel keys are also stored successfylly.")
+                else:
+                    return
             else:
                 messagebox.showerror("ERROR", "No valid algorithm selected.")
                 return

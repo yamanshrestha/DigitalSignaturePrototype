@@ -26,22 +26,46 @@ def generate(usecurve) :  #generating keys
     key = ECC.generate(curve= usecurve) #use secp256r1 for testing
     loadingAnimationPrivate()
     private_key = key.export_key(format="PEM") #storing private key
-    print ('\n')
-    print (private_key)
+    #print ('\n')
+    #print (private_key)
     time.sleep(1.3)
     print ('\n')
     loadingAnimationPublic()
-    public_keygen = key.public_key().export_key(format="PEM") #storing public key to variable
-    print ('\n')
-    print (public_keygen)
+    public_key = key.public_key().export_key(format="PEM") #storing public key to variable
+    #print ('\n')
+    #print (public_key)
 #saving generated keys
-    f = open('c:/Users/' + os.getlogin() + '/Desktop'+ '/PrivateKeyECC.pem', 'w')
-    f.write(private_key)
-    f.close()
+    current_dir = os.path.dirname(os.path.abspath(__file__))
 
-    f = open('c:/Users/' + os.getlogin() + '/Desktop' +'/PublicKeyECC.pem','w')
-    f.write(public_keygen)
-    f.close()
+    # Define the folder to store the keys
+    key_folder = os.path.join(current_dir, "key")
+
+    # Create the folder if it doesn't exist
+    os.makedirs(key_folder, exist_ok=True)
+
+    # Define the file paths for the keys
+    private_key_path = os.path.join(key_folder, "PrivateKeyECC.pem")
+    public_key_path  = os.path.join(key_folder, "PublicKeyECC.pem")
+
+    # Write the private key
+    with open(private_key_path, 'wb') as f:
+        f.write(private_key.encode('utf-8'))
+
+    # Write the public key
+    with open(public_key_path, 'wb') as f:
+        f.write(public_key.encode('utf-8'))
+
+    print("Thank You! Key Created Successfully.")
+    
+    return (private_key, public_key)
+
+    # f = open('c:/Users/' + os.getlogin() + '/Desktop'+ '/PrivateKeyECC.pem', 'w')
+    # f.write(private_key)
+    # f.close()
+
+    # f = open('c:/Users/' + os.getlogin() + '/Desktop' +'/PublicKeyECC.pem','w')
+    # f.write(public_keygen)
+    # f.close()
 
 
 #to avoid this code execution in main GUI
@@ -60,5 +84,5 @@ if __name__ == "__main__":
         else:
             print ("The curve must be selected from above list.")
             continue
-        print("Thank You! for Using Key Generation")
+        print("Thank You! Key Created Successfully")
         exit()

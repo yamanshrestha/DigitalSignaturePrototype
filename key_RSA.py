@@ -26,24 +26,37 @@ def generate(bitsize) : #creating function that controls the key generation proc
     key = RSA.generate(bitsize)
     loadingAnimationPrivate()
     private_key = key.exportKey('PEM') #storing privatekey into  private_key variable
-    print ('\n')
-    print (private_key)
+    #print ('\n')
+    #print (private_key)
     time.sleep(1.3)
     print ('\n')
     loadingAnimationPublic()
     pub_keygen = key.publickey() #storing public key into  public_keygen variable
     public_key = pub_keygen.exportKey('PEM')
-    print ('\n')
-    print (public_key)
-    f = open('c:/Users/' + os.getlogin() + '/Desktop'+ '/PrivateKeyRSA.pem', 'wb')
-    f.write(private_key)
-    f.close()
+    #print ('\n')
+    #print (public_key)
+    current_dir = os.path.dirname(os.path.abspath(__file__))
 
-    f = open('c:/Users/' + os.getlogin() + '/Desktop' +'/PublicKeyRSA.pem','wb')
-    f.write(public_key)
-    f.close()
-    print("Thank You! for Using Key Generation.")
+    # Define the folder to store the keys
+    key_folder = os.path.join(current_dir, "key")
 
+    # Create the folder if it doesn't exist
+    os.makedirs(key_folder, exist_ok=True)
+
+    # Define the file paths for the keys
+    private_key_path = os.path.join(key_folder, "PrivateKeyRSA.pem")
+    public_key_path  = os.path.join(key_folder, "PublicKeyRSA.pem")
+
+    # Write the private key
+    with open(private_key_path, 'wb') as f:
+        f.write(private_key)
+
+    # Write the public key
+    with open(public_key_path, 'wb') as f:
+        f.write(public_key)
+
+    print("Thank You! Key Created Successfully.")
+    return (private_key, public_key)
 
 #Avoid same code execution in GUI 
 
@@ -51,8 +64,8 @@ if __name__ == "__main__":
     while True:
         try:
             bitsize = int(input("Enter the bit size of keys::"))
-            if bitsize < 1024:
-                print ("The bitsize must be greater or equal to 1024..")
+            if bitsize < 512:
+                print ("The bitsize must be greater or equal to 512..")
                 continue
             else:
                 generate(bitsize)
@@ -60,5 +73,5 @@ if __name__ == "__main__":
         except:
             print ("The given input is incorrect.")
 
-    print("Thank You! for Using Key Generation")
-    exit()
+    print("Thank You! Key Created Successfully")
+    exit()  

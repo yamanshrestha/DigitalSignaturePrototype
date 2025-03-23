@@ -27,24 +27,54 @@ def generate(bitsize) :
     #bitsize = int(input("Enter the bit size of keys::"))
     key = ElGamal.generate(bitsize, randfunc=Random.get_random_bytes)
     loadingAnimationPrivate()
-    private_key = key.x
-    print ('\n')
-    print (private_key)
+    private_keyx = key.x
+    #print ('\n')
+    #print (private_key)
     time.sleep(1.3)
     print ('\n')
     loadingAnimationPublic()
-    public_key = key.y
-    print ('\n')
-    print (public_key)
-    
-    f = open('/Users/' + os.getlogin() + '/Desktop'+ '/PrivateKeyElgalmal.pem', 'w')
-    f.write(str(private_key))
-    f.close()
+    public_keyy = key.y
+    #print ('\n')
+    #print (public_key)
+    # It is advisable to also store the key parameters p and g
+    p = key.p
+    g = key.g
 
-    f = open('/Users/' + os.getlogin() + '/Desktop' +'/PublicKeyElgalmal.pem','w')
-    f.write(str(public_key))
-    f.close()
-    print("Thank You! for Using Key Generation")
+    current_dir = os.path.dirname(os.path.abspath(__file__))
+
+    # Define the folder to store the keys
+    key_folder = os.path.join(current_dir, "key")
+
+    # Create the folder if it doesn't exist
+    os.makedirs(key_folder, exist_ok=True)
+
+    # Define the file paths for the keys
+    private_key_path = os.path.join(key_folder, "PrivateKeyElgalmal.txt")
+    public_key_path  = os.path.join(key_folder, "PublicKeyElgalmal.txt")
+
+    private_key = (
+        "p: " + str(p) + "\n" +
+        "g: " + str(g) + "\n" +
+        "x (private exponent): " + str(private_keyx) + "\n"
+    )
+    
+    # For the public key, include p, g, and y.
+    public_key = (
+        "p: " + str(p) + "\n" +
+        "g: " + str(g) + "\n" +
+        "y (public component): " + str(public_keyy) + "\n"
+    )
+    
+    # Write the private key
+    with open(private_key_path, 'w') as f:
+        f.write(private_key)
+
+    # Write the public key
+    with open(public_key_path, 'w') as f:
+        f.write(public_key)
+
+    print("Thank You! for Using Key Generation.")
+    return (private_key, public_key)
 
 #Avoid same code execution in GUI 
 

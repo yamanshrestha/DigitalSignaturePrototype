@@ -1,0 +1,34 @@
+LICENSE
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Virtual environment directories
+venv/
+winenv/
+myenv/
+env/
+.venv/
+
+# OS or IDE-specific files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Python egg metadata, build, and dist folders
+*.egg-info/
+build/
+dist/
+
+# If you consider "signature" or "key" folders as generated artifacts:
+signature/
+key/
+
+# If you have secrets or config files you don't want to commit:
+*.envtest/ 
+"test/" 
+test/ 
+main.spec 
+README.md

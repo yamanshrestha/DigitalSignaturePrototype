@@ -27,4 +27,6 @@ signature/
 key/
 
 # If you have secrets or config files you don't want to commit:
-*.env
+*.envtest/ 
+"test/" 
+test/ 

@@ -48,11 +48,11 @@ def generate(bitsize) : #creating function that controls the key generation proc
     public_key_path  = os.path.join(key_folder, "PublicKeyRSA.pem")
 
     # Write the private key
-    with open(private_key_path, 'wb') as f:
+    with open(private_key_path, 'w') as f:
         f.write(private_key)
 
     # Write the public key
-    with open(public_key_path, 'wb') as f:
+    with open(public_key_path, 'w') as f:
         f.write(public_key)
 
     print("Thank You! Key Created Successfully.")
@@ -64,7 +64,7 @@ if __name__ == "__main__":
     while True:
         try:
             bitsize = int(input("Enter the bit size of keys::"))
-            if bitsize < 512:
+            if bitsize < 1024:
                 print ("The bitsize must be greater or equal to 512..")
                 continue
             else:

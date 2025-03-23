@@ -30,3 +30,4 @@ key/
 *.envtest/ 
 "test/" 
 test/ 
+main.spec 

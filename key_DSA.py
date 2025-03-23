@@ -46,11 +46,11 @@ def generate(bitsize) : #creating funtion to generate keys
     public_key_path  = os.path.join(key_folder, "PublicKeyDSA.pem")
 
     # Write the private key
-    with open(private_key_path, 'wb') as f:
+    with open(private_key_path, 'w') as f:
         f.write(private_key)
 
     # Write the public key
-    with open(public_key_path, 'wb') as f:
+    with open(public_key_path, 'w') as f:
         f.write(public_key)
     return (private_key, public_key)
     print("Thank You! for Using Key Generation.")

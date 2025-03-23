@@ -28,7 +28,7 @@ class Generate(ttk.Frame):
         # Parameters subframe for bit size and curve
         param_frame = ttk.Frame(alg_frame)
         param_frame.pack(fill=X, padx=5, pady=2)
-        self.bits = IntVar(value=512)
+        self.bits = IntVar(value=1024)
         ttk.Label(param_frame, text="Bit Size:").pack(side=LEFT, padx=5)
         ttk.Entry(param_frame, textvariable=self.bits, width=10).pack(side=LEFT, padx=5)
         self.curve = StringVar(value="secp256r1")
@@ -93,7 +93,7 @@ class Generate(ttk.Frame):
                     return
             else:
                 # For RSA, DSA, etc., require at least 1024 bits
-                if self.bits.get() < 512:
+                if self.bits.get() < 1024:
                     messagebox.showerror("ERROR", "The bitsize must be >= 512")
                     return
                 
